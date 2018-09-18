@@ -12,5 +12,10 @@ class TestArm(unittest.TestCase):
         arm = Arm.Arm;
         self.assertEqual("move x:" + str(1) +" y: "+str(2)+" z: "+ str(3),arm.move(1,2,3));
 
+    def test_calc(self):
+        arm = Arm.Arm;
+        arm.calc()
+        self.assertFalse(False);
+
 if __name__ == '__main__':
     unittest.main()
