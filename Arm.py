@@ -1,10 +1,10 @@
 import math
 #  -*- coding: UTF-8 -*-
 class Arm:
-    def __init__():
+    def __init__(self):
         print("初期化スタート")
 
-    def move(x,y,z):
+    def move(self,x,y,z):
         print("move x:" + str(x) +"y: "+str(y)+"z: "+ str(z)) 
 
         #動きxに対してそれぞれ計算する
@@ -20,5 +20,7 @@ class Arm:
         # axis1
         return "move x:" + str(x) +" y: "+str(y)+" z: "+ str(z)
 
-    def calc():
+    def calc(self):
         print("calc start")
+
+        
