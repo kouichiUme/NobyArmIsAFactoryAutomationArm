@@ -2,9 +2,14 @@
 import pygame
 from pygame.locals import *
 import sys
+sys.path.append(".")
 import math
 import time
 import threading
+import Arm
+
+arm = Arm.Arm()
+
 
 # ボタンは 0から11まで
 # アナログボタンを押すと joyaixisモーションがアナログで動く
@@ -67,7 +72,12 @@ def main():
                 z, t = j.get_axis(2), j.get_axis(3)
                 print('x and y : ' + str(x) + ' , ' + str(y))
                 print('z and t : ' + str(z) + ' , ' + str(t))
-                roundArm(x,y)
+                v,theta1 = roundArm(x,y)
+                v2,theta2 =  roundArm(z, t)
+                robotArmDirection(theta1)
+                robotArmShoulder(v)
+                robotArmWristSnap(theta2)
+                robotArmElbow(v2)
             elif e.type == pygame.locals.JOYBALLMOTION:  # 8
                 print('ball motion')
             elif e.type == pygame.locals.JOYHATMOTION:  # 9
@@ -95,13 +105,13 @@ def pressedButton(button):
     elif button == RIGHT_FOUR_BUTTON:
         arm_T_MOVE()
     elif button == LEFT_UP_TRIGGER:
-        hand_Grasp()
+        robotArmRotateClockWiseStart()
     elif button == RIGHT_UP_TRIGGER:
-        hand_Grasp()
+        robotArmPalmPinchClockWiseStart()
     elif button == LEFT_DOWN_TRIGGER:
-        hand_Grasp()
+        robotArmRotateCounterClockWiseStart()
     elif button == RIGHT_DOWN_TRIGGER:
-        hand_Grasp()
+        robotArmPalmPinchCounterClockWiseStart()
 
 
 # comment
@@ -119,15 +129,74 @@ def releasedButton(button):
     elif button == RIGHT_FOUR_BUTTON:
         arm_T_STOP()
     elif button == LEFT_UP_TRIGGER:
-        hand_release()
+        robotArmRotateClockWiseStop()
     elif button == RIGHT_UP_TRIGGER:
-        hand_release()
+        robotArmPalmPinchClockWiseStop()
     elif button == LEFT_DOWN_TRIGGER:
-        hand_release()
+        robotArmRotateCounterClockWiseStop()
     elif button == RIGHT_DOWN_TRIGGER:
-        hand_release()
+        robotArmPalmPinchCounterClockWiseStop()
 
 #
+# 腕の軸部分
+# 時計回りに回るように thetaを増やすメソットを開始する
+#
+def robotArmRotateClockWiseStart():
+    print("start rotate clockwise")
+    time.sleep(0.1)
+    arm.startRotateClockWise()
+    #theta += 10
+    #
+    #robotArmRotate(theta)
+    return
+#
+# 停止する
+def robotArmRotateClockWiseStop():
+    print("stop rotate clockwise")
+    arm.stopRotateClockWise()
+    #stopRotate()
+    return
+
+#腕軸部分の時計回り回転
+# theta を減らすような内部メソッドを呼び出す
+def robotArmRotateCounterClockWiseStart():
+    print("start rotate counter clockwise")
+    arm.startRotateCounterClockWise()
+    return
+
+def robotArmRotateCounterClockWiseStop():
+    print("stop rotate counter clockwise")
+    arm.stopRotateCounterClockWise()
+    return
+
+
+
+#手首半時計回りに回す開始
+def robotArmPalmPinchClockWiseStart():
+    print("startrotate palm clockwise")
+    arm.startPalmRoteteClockWise()
+    return
+
+#手首半時計回りに回す停止
+def robotArmPalmPinchClockWiseStop():
+    print("stop rotate palm clockwise")
+    arm.stopPalmRoteteClockWise()
+    return
+
+#手首半時計回りに回す
+def robotArmPalmPinchCounterClockWiseStart():
+    print("startrotate palm counter clockwise")
+    arm.startPalmtRotateCounterClockWise()
+    return
+
+#手首半時計回りに回す
+def robotArmPalmPinchCounterClockWiseStop():
+    print("stop rotate palm counter clockwise")
+    arm.stopPalmRotateCounterClockWise()
+    return
+
+
+
 
 
 def arm_X_Move():
@@ -178,10 +247,8 @@ def hand_release():
 #
 # アナログジョイスティック
 #
-# 動き
+# 角度と伸び具合をあらわすヴェクトル絶対値を返す
 #
-
-
 def roundArm(armX, armY):
     print(" " + str(armX) + " " + str(armY))
 # x,yから向きを計算して
@@ -189,6 +256,8 @@ def roundArm(armX, armY):
     x2 = armX*armX
     y2 = armY*armY
     v = math.sqrt(x2+y2)
+    v0 = v
+    theta1 = 0
     # 0 < math.acos < math.pi
     # math.asin < 0
     #
@@ -246,27 +315,54 @@ def roundArm(armX, armY):
         print("theta1 " + str(theta1) + " theta2:" + str(theta2))
         i = math.sin(theta1)*armY + math.cos(theta1)*armX
         vmax = math.sqrt(1 + math.tan(theta_t)*math.tan(theta_t))
+        v0 = abs(i/vmax)
         print(" i : " + str(abs(i/vmax)) + " theta : " + str(theta1))
+    return v0,theta1
 
 # 向き
 # acos(x/abs(x))
 #
 # x*x + y*Y /abs(max(x)^2 + max(y)^2)
 # maxx = 1 , maxy = 1
-
+minPwmValue = 500
+maxPwmValue = 2000
+rangePwm = maxPwmValue - minPwmValue
+centerPwmValue = (maxPwmValue + minPwmValue) /2
 # ロボットアーム向き
 # 腕の回転角度をもらってそこに移動する
+# - math.pi < theta < math.pi
 def robotArmDirection(theta):
     print("theta :" + str(theta))
+    degree = theta/(2*math.pi)
+    pwmRate = rangePwm * degree + centerPwmValue
+    print("pwm rate  : " + str(pwmRate))
 # ここでロボットアーム側PWMに変換する
-
+    
 
 #
 # ロボットアームの肩
-#
-def robotArmSholder(theta):
-    print("sholder theta :" + str(theta))
+# 肩一番下のサーボの開閉
+# デフォルトは0の状態
+# 0 < v < 1
+minShoulderPwmValue = 500
+maxShoulderPwmValue = 2000
+centerShoulderPwmValue = (maxShoulderPwmValue + minShoulderPwmValue) /2
+def calcRangePwm(x,y):
+    return y - x
+
+randgeShoulderPwmValue = calcRangePwm(minShoulderPwmValue,maxShoulderPwmValue)
+
+def robotArmShoulder(theta):
+    print("shoulder theta :" + str(theta))
+    randgeShoulderPwmValue = calcRangePwm(minShoulderPwmValue,maxShoulderPwmValue)
+    shoulderPwmRate = randgeShoulderPwmValue * theta
+    if theta < 0.000001 :
+         shoulderPwmRate = 0 #free
+    else :
+        shoulderPwmRate += minShoulderPwmValue
+    print("shoulder pwm :" + str(shoulderPwmRate))
 # ここでロボットアーム側PWMに変換する
+    
 
 
 #
@@ -276,9 +372,10 @@ def robotArmElbow(theta):
     print("elbow theta :" + str(theta))
 # ここでロボットアーム側PWMに変換する
 
+
+
 # ロボットアーム腕の回転
-
-
+# 
 def robotArmRotate(theta):
     print("rotate theta :" + str(theta))
 # ここでロボットアーム側PWMに変換する

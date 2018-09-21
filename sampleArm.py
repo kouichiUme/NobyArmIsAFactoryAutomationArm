@@ -12,6 +12,9 @@ pi = pigpio.pi()
 pi.set_mode(gpio_pin0, pigpio.OUTPUT)
 pi.set_mode(gpio_pin1, pigpio.OUTPUT)
 
+#50Hz Frequency(20ms)
+#  dutyRange(1ms 5ms)
+#5%  25%がレンジ
 pi.set_PWM_frequency(17,800)
 pi.set_PWM_frequency(18,800)
 
