@@ -363,6 +363,7 @@ def robotArmShoulder(theta):
     else :
         shoulderPwmRate += minShoulderPwmValue
     print("shoulder pwm :" + str(shoulderPwmRate))
+    arm.setShoulder(shoulderPwmRate)
 # ここでロボットアーム側PWMに変換する
     
 

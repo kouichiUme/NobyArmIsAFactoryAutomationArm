@@ -1,7 +1,21 @@
 import math
 import threading
 import time
+import RaspberryIo
 #  -*- coding: UTF-8 -*-
+
+# //17
+PALM_PINCH_IO=17
+# //18
+WRIST_SNAP_IO=18
+# //22
+ARM_ROTATE_IO=22
+# //23
+ARM_ELBOW_IO=23
+# //24
+ARM_SHOULDER_IO=24
+# //27
+ARM_DIRECTION_IO=27
 
 
 class Arm(threading.Thread):
@@ -9,13 +23,18 @@ class Arm(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         print("初期化スタート")
+        self.raspberry = RaspberryIo.RaspberryIo()
         self.rotateClockWise = True
         self.rotateCounterClockWise = False
         self.palmRoteateClockWise = True
         self.palmRoteateCounterClockWise = False
-        self.palmPwmRate = 0
-        self.armRotatePwmRate = 0
+        self.palmPwmRate = 1250
+        self.wristSnapRate = 1250
+        self.armRotatePwmRate = 1250
+        self.elbowRate = 500
         self.delta = 50
+        self.shoulderRate = 500
+        self.direction = 1250
         #p = threading.Thread()
         # p.start()
 
@@ -77,6 +96,9 @@ class Arm(threading.Thread):
         self.palmRoteateCounterClockWise = False
         print("stop palm counter  rotate ")
 
+    def setShoulder(self ,value):
+        self.shoulderRate = value
+
     # ボタン押されているもののpwmパラメータ値を上昇させる
 
     def run(self):
@@ -91,12 +113,25 @@ class Arm(threading.Thread):
             # 手のひら反対時計回り
             if self.palmRoteateCounterClockWise:
                 self.palmPwmRate -= self.delta
+                self.raspberry.setOutput(PALM_PINCH_IO,self.palmPwmRate)
             # 手のひら時計回り
             if self.palmRoteateClockWise:
                 self.palmPwmRate += self.delta
+                self.raspberry.setOutput(PALM_PINCH_IO,self.palmPwmRate)
             # ローテート
             if self.rotateClockWise:
                 self.armRotatePwmRate += self.delta
-            # ローテート
+                self.raspberry.setOutput(ARM_ROTATE_IO,self.armRotatePwmRate)
+            # 腕ローテート
             if self.rotateCounterClockWise:
                 self.armRotatePwmRate -= self.delta
+                self.raspberry.setOutput(ARM_ROTATE_IO,self.armRotatePwmRate)
+            # 手首
+            self.raspberry.setOutput(WRIST_SNAP_IO,self.wristSnapRate)
+            # 肘
+            self.raspberry.setOutput(ARM_ELBOW_IO,self.elbowRate)
+            # 肩
+            self.raspberry.setOutput(ARM_SHOULDER_IO,self.shoulderRate)
+            self.raspberry.setOutput(ARM_DIRECTION_IO,self.direction)
+            
+
