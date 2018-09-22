@@ -375,7 +375,7 @@ minElbowPwmValue = 500
 maxElbowPwmValue = 2000
 def robotArmElbow(theta):
     print("elbow theta :" + str(theta))
-    randgeElbowPwmValue = calcRangePwm(maxElbowPwmValue,minElbowPwmValue)
+    randgeElbowPwmValue = calcRangePwm(minElbowPwmValue,maxElbowPwmValue)
 # ここでロボットアーム側PWMに変換する
     elbowPwmRate = randgeElbowPwmValue * theta
     if theta < 0.000001 :
