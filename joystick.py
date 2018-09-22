@@ -367,11 +367,19 @@ def robotArmShoulder(theta):
 
 #
 # ロボットアーム腕部分
-#
+# 肩とほぼ同じ
+minElbowPwmValue = 500
+maxElbowPwmValue = 2000
 def robotArmElbow(theta):
     print("elbow theta :" + str(theta))
+    randgeElbowPwmValue = calcRangePwm(maxElbowPwmValue,maxElbowPwmValue)
 # ここでロボットアーム側PWMに変換する
-
+    elbowPwmRate = randgeElbowPwmValue * theta
+    if theta < 0.000001 :
+        elbowPwmRate = 0
+    else:
+        elbowPwmRate += minElbowPwmValue
+    print("elbow pwm :" + str(elbowPwmRate))
 
 
 # ロボットアーム腕の回転
