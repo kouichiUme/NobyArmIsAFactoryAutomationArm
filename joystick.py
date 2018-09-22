@@ -9,7 +9,8 @@ import threading
 import Arm
 
 arm = Arm.Arm()
-
+arm.setDaemon(True)
+arm.start()
 
 # ボタンは 0から11まで
 # アナログボタンを押すと joyaixisモーションがアナログで動く
@@ -57,6 +58,7 @@ except pygame.error:
 
 def main():
     pygame.init()
+
 
     while True:
 
