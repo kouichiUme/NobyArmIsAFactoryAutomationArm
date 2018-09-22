@@ -35,6 +35,8 @@ class Arm(threading.Thread):
         self.delta = 50
         self.shoulderRate = 500
         self.direction = 1250
+        self.minPwmRate = 500
+        self.maxPwmRate = 2000
         #p = threading.Thread()
         # p.start()
 
@@ -99,6 +101,13 @@ class Arm(threading.Thread):
     def setShoulder(self ,value):
         self.shoulderRate = value
 
+    def maxPwm(self,value):
+        return value < self.maxPwmRate 
+
+    def minPwm(self,value):
+        return value > self.minPwmRate 
+
+
     # ボタン押されているもののpwmパラメータ値を上昇させる
 
     def run(self):
@@ -112,19 +121,23 @@ class Arm(threading.Thread):
             time.sleep(0.1)
             # 手のひら反対時計回り
             if self.palmRoteateCounterClockWise:
-                self.palmPwmRate -= self.delta
+                if self.minPwm(self.palmPwmRate) :
+                    self.palmPwmRate -= self.delta
                 self.raspberry.setOutput(PALM_PINCH_IO,self.palmPwmRate)
             # 手のひら時計回り
             if self.palmRoteateClockWise:
-                self.palmPwmRate += self.delta
+                if self.maxPwm(self.palmPwmRate) :
+                    self.palmPwmRate += self.delta
                 self.raspberry.setOutput(PALM_PINCH_IO,self.palmPwmRate)
             # ローテート
             if self.rotateClockWise:
-                self.armRotatePwmRate += self.delta
+                if self.maxPwm(self.palmPwmRate) :
+                    self.armRotatePwmRate += self.delta
                 self.raspberry.setOutput(ARM_ROTATE_IO,self.armRotatePwmRate)
             # 腕ローテート
             if self.rotateCounterClockWise:
-                self.armRotatePwmRate -= self.delta
+                if self.minPwm(self.armRotatePwmRate) :
+                    self.armRotatePwmRate -= self.delta
                 self.raspberry.setOutput(ARM_ROTATE_IO,self.armRotatePwmRate)
             # 手首
             self.raspberry.setOutput(WRIST_SNAP_IO,self.wristSnapRate)
