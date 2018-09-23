@@ -370,6 +370,7 @@ def robotArmShoulder(theta):
     
 
 
+
 #
 # ロボットアーム腕部分
 # 肩とほぼ同じ
@@ -399,7 +400,10 @@ def robotArmRotate(theta):
 def robotArmWristSnap(theta):
     print("Snap :" + str(theta))
 # ここでロボットアーム側PWMに変換する
-
+    degree = theta/(2*math.pi)
+    pwmRate = rangePwm * degree + centerPwmValue
+    print("snap pwm  : " + str(pwmRate))
+    arm.setWristSnap(pwmRate)
 # ロボットの手でつまむ部分の回転
 
 
