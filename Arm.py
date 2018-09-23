@@ -105,7 +105,6 @@ class Arm(threading.Thread):
     def setElbow(self ,value):
         self.elbowRate = int(value)
 
-
     def setDirection(self ,value):
         self.direction = int(value)
 
