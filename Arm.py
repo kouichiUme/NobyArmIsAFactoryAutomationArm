@@ -112,10 +112,10 @@ class Arm(threading.Thread):
         self.wristSnapRate = int(value)
 
     def maxPwm(self,value):
-        return value < self.maxPwmRate 
+        return value +self.delta < self.maxPwmRate 
 
     def minPwm(self,value):
-        return value > self.minPwmRate 
+        return value -self.delta > self.minPwmRate 
 
 
     # ボタン押されているもののpwmパラメータ値を上昇させる
@@ -141,7 +141,7 @@ class Arm(threading.Thread):
                 self.raspberry.setOutput(PALM_PINCH_IO,self.palmPwmRate)
             # ローテート
             if self.rotateClockWise:
-                if self.maxPwm(self.palmPwmRate) :
+                if self.maxPwm(self.armRotatePwmRate) :
                     self.armRotatePwmRate += self.delta
                 self.raspberry.setOutput(ARM_ROTATE_IO,self.armRotatePwmRate)
             # 腕ローテート
