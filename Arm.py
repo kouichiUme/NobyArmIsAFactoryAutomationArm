@@ -101,6 +101,12 @@ class Arm(threading.Thread):
     def setShoulder(self ,value):
         self.shoulderRate = value
 
+    def setElbow(self ,value):
+        self.elbowRate = value
+
+    def setWristSnap(self ,value):
+        self.wristSnapRate = value
+
     def maxPwm(self,value):
         return value < self.maxPwmRate 
 
