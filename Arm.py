@@ -104,6 +104,10 @@ class Arm(threading.Thread):
     def setElbow(self ,value):
         self.elbowRate = value
 
+
+    def setDirection(self ,value):
+        self.direction = value
+
     def setWristSnap(self ,value):
         self.wristSnapRate = value
 

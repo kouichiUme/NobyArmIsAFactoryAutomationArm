@@ -338,6 +338,7 @@ def robotArmDirection(theta):
     degree = theta/(2*math.pi)
     pwmRate = rangePwm * degree + centerPwmValue
     print("pwm rate  : " + str(pwmRate))
+    arm.setDirection(pwmRate)
 # ここでロボットアーム側PWMに変換する
     
 
@@ -384,7 +385,7 @@ def robotArmElbow(theta):
     else:
         elbowPwmRate += minElbowPwmValue
     print("elbow pwm :" + str(elbowPwmRate))
-    arm.setShoulder(elbowPwmRate)
+    arm.setElbow(elbowPwmRate)
 
 
 # ロボットアーム腕の回転
