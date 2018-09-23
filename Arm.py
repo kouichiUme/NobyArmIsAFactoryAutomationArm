@@ -2,6 +2,7 @@ import math
 import threading
 import time
 import RaspberryIo
+import math
 #  -*- coding: UTF-8 -*-
 
 # //17
@@ -99,17 +100,17 @@ class Arm(threading.Thread):
         print("stop palm counter  rotate ")
 
     def setShoulder(self ,value):
-        self.shoulderRate = value
+        self.shoulderRate = int(value)
 
     def setElbow(self ,value):
-        self.elbowRate = value
+        self.elbowRate = int(value)
 
 
     def setDirection(self ,value):
-        self.direction = value
+        self.direction = int(value)
 
     def setWristSnap(self ,value):
-        self.wristSnapRate = value
+        self.wristSnapRate = int(value)
 
     def maxPwm(self,value):
         return value < self.maxPwmRate 
