@@ -90,12 +90,16 @@ def moveArm(x, y, z, k, l, m):
 def cameraOpen():
     # カメラをキャプチャする
     cap = cv2.VideoCapture(0)  # 0はカメラのデバイス番号
+    cap.set(cv2.CAP_PROP_FPS,10)
     #frame = cv2.resize(frame, (int(frame.shape[1]/4), int(frame.shape[0]/4)))
-
+    cap2 = cv2.VideoCapture(1)
+    cap2.set(cv2.CAP_PROP_FPS,10);
     while True:
         ret, frame = cap.read()
-        if(not ret):
+        ret2,frame2 = cap2.read()
+        if(not ret and not ret2):
             print("えらー")
+
         #frame = cv2.resize(frame, (int(frame.shape[1]/4), int(frame.shape[0]/4)))
         # フレームをリサイズ
         # 色を白黒にする
@@ -108,6 +112,7 @@ def cameraOpen():
             bw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         drawContours(frame, contours)
         cv2.imshow('camera capture', frame)
+        cv2.imshow('camera2 ',frame2)
         k = cv2.waitKey()
         if k == 27:  # ESCキーで終了
             break
