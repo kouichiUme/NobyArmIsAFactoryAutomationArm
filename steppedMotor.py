@@ -31,13 +31,14 @@ time.sleep(5)
 # Y     off off on on   off off on
 # Y_    on off off on   on off off
 
-pi.write(gpio_pin_black,1)
-pi.write(gpio_pin_yellow,0)
-pi.write(gpio_pin_orange,1)
+while True:
+    pi.write(gpio_pin_black,1)
+    pi.write(gpio_pin_yellow,0)
+    pi.write(gpio_pin_orange,1)
 
-pi.write(gpio_pin_black,0)
-pi.write(gpio_pin_brown,1)
+    pi.write(gpio_pin_black,0)
+    pi.write(gpio_pin_brown,1)
 
-pi.write(gpio_pin_orange,0)
-pi.write(gpio_pin_yellow,1)
-pi.write(gpio_pin_brown,0)
+    pi.write(gpio_pin_orange,0)
+    pi.write(gpio_pin_yellow,1)
+    pi.write(gpio_pin_brown,0)
