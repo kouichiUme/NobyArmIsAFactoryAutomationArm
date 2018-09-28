@@ -93,7 +93,7 @@ def cameraOpen():
     cap.set(cv2.CAP_PROP_FPS,10)
     #frame = cv2.resize(frame, (int(frame.shape[1]/4), int(frame.shape[0]/4)))
     cap2 = cv2.VideoCapture(1)
-    cap2.set(cv2.CAP_PROP_FPS,10);
+    cap2.set(cv2.CAP_PROP_FPS,10)
     while True:
         ret, frame = cap.read()
         ret2,frame2 = cap2.read()
@@ -113,6 +113,7 @@ def cameraOpen():
         drawContours(frame, contours)
         cv2.imshow('camera capture', frame)
         cv2.imshow('camera2 ',frame2)
+        detectFeaturePoint(frame,frame2)
         k = cv2.waitKey()
         if k == 27:  # ESCキーで終了
             break
@@ -140,5 +141,21 @@ def drawContours(frame, contours):
         detect_count = detect_count + 1
     print("detect count");
     print(detect_count);
+
+def detectFeaturePoint(frame,frame2):
+    src1 = frame
+    src2 = frame2
+    detector = cv2.AKAZE_create()
+    keypoint1 , descript1 = detector.detectAndCompute(src1,None)
+    keypoint2 , descript2 = detector.detectAndCompute(src2,None)
+    out1 = cv2.drawKeypoints(src1,keypoint1,None)
+    out2 = cv2.drawKeypoints(src2,keypoint2,None)
+    # 探す
+    matcher = cv2.BFMatcher(cv2.NORM_HAMMING)
+    matches = matcher.match(descript1,descript2)
+    dst = cv2.drawMatches(src1,keypoint1,src2,keypoint2,matches,None,flags=2)
+    cv2.imshow('dst',dst)
+
+
 
 main()
