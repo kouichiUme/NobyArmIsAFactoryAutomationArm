@@ -29,15 +29,4 @@ class ObjectDistinguisher :
         #テンプレートサーチ
         print("template search ")
 
-#オブジェクトとの距離を計算する
-    def meatureDistance(self,objectImage):
-        #距離計算をする
-        print("イメージから距離計算をする")
-        #例えば100cmとする本来なら画像から距離を計算する
-        # image1とimage2から視差を計算する
-
-        fromObject = [100,200,200]
-        # 距離計算する
-        dist= Distance.Distance()
-        dist.calcDistanceBetween(fromObject)
     

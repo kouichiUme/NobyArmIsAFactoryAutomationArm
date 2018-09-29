@@ -5,7 +5,7 @@ import math
 # 現在位置と対象までの計算問題はできるので、解く。
 # 距離、腕の動かし方、動かし方はできたらプランニングできたらより良い
 # あと、映っているものが何かを学習させるのがいいかも
-# 映っているものと、目的のものがあるかないかのマッチ
+# 映っているものと、目的のものがあるかないかのマッチDistance
 class Distance :
     def __init__(self):
  #       self.pi = pigpio.pi()
@@ -31,12 +31,9 @@ class Distance :
     #腕の可動域内か計算する
     #
     def isInTheReach(self,targetToGrab):
-
-
-
+        print("isInThe search")
     # 腕の可動域外の場合は、モーターで移動する分を計算する。
     # X,Y,Z
     # 腕分だけ少し手前で止まるため
     def calcMoveDistance(self,targetToGrab):
-
-
+        print("move and wait in front of object")

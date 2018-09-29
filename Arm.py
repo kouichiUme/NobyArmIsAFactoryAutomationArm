@@ -18,6 +18,23 @@ ARM_SHOULDER_IO=24
 # //27
 ARM_DIRECTION_IO=27
 
+#長さのコンスタント
+#手首から軸まで
+WRIST_LENGTH=30
+#腕
+ARM_LENGTH=130
+#上腕
+ARMLEVEL_LENGTH=140
+#肩？（上腕の回転軸まで)
+# 100で計算でもよいかも
+SHOULDER_LENGTH=99
+
+##腕の置いてある位置
+# 左目の位置を原点として
+#
+ARM_LOCATION_X=300
+ARM_LOCATION_Y=0
+ARM_LOCATION_Z=0
 
 class Arm(threading.Thread):
 
@@ -41,9 +58,8 @@ class Arm(threading.Thread):
         #p = threading.Thread()
         # p.start()
 
-    def move(self, x, y, z):
-        print("move x:" + str(x) + "y: "+str(y)+"z: " + str(z))
-
+    def move(self,locationXyz):
+        print("move x:" + str(locationXyz[0]) + "y: "+str(locationXyz[1])+"z: " + str(locationXyz[2]))
         # 動きxに対してそれぞれ計算する
         # x方向 theta = arctangent(x)
         # theta1 = math.asin(x)
@@ -55,7 +71,7 @@ class Arm(threading.Thread):
         # axis1
         # axis1
         # axis1
-        return "move x:" + str(x) + " y: "+str(y)+" z: " + str(z)
+
 
     def calc(self):
         print("calc start")
@@ -156,5 +172,4 @@ class Arm(threading.Thread):
             # 肩
             self.raspberry.setOutput(ARM_SHOULDER_IO,self.shoulderRate)
             self.raspberry.setOutput(ARM_DIRECTION_IO,self.direction)
-            
 

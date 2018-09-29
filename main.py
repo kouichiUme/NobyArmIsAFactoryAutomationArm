@@ -1,4 +1,6 @@
 import cv2
+import NobyEyes
+import Arm
 
 
 def main():
@@ -13,13 +15,19 @@ def main():
     # end
     searchObjectAndOrder("リモコン", "とって")
     print("finish noby eye")
+    eyes = NobyEyes.NobyEyes()
+
+    locationXyz = eyes.meatureDistance()
+    arm = Arm.Arm()
+    arm.move(locationXyz)
     print(" start arm")
     # Arm.move()
     # arm.grusp()
-    moveArm(1, 2, 3, 4, 5, 6)
+    #moveArm(1, 2, 3, 4, 5, 6)
     # finish arm
     print("finish arm")
-    cameraOpen()
+    #cameraOpen()
+
 
 #
 #

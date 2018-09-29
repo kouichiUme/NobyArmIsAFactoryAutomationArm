@@ -5,7 +5,7 @@ import unittest
 import NobyNeckMoverGimbalStorm
 
 sys.path.append("..")
-class TestDistance(unittest.TestCase):
+class TestNobyNeckMoverGimbalStorm(unittest.TestCase):
 
     def test_detect(self):
             print("noby neck mover start")

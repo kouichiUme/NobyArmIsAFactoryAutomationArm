@@ -5,7 +5,7 @@ import unittest
 import ObjectDistinguisher
 
 sys.path.append("..")
-class TestDistance(unittest.TestCase):
+class TestObjectDistinguisher(unittest.TestCase):
 
     def test_detect(self):
             print("detect start")
