@@ -139,9 +139,12 @@ def drawContours(frame, contours):
         # 外接矩形毎に画像を保存
         # 画像切り出して、もの判別する。
         detect_count = detect_count + 1
-    print("detect count");
-    print(detect_count);
+    print("detect count")
+    print(detect_count)
 
+#
+# 特徴点抽出してマッチさせてみる
+# 
 def detectFeaturePoint(frame,frame2):
     src1 = frame
     src2 = frame2
