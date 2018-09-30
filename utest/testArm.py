@@ -9,13 +9,19 @@ class TestArm(unittest.TestCase):
             self.assertEqual("foo".upper(),"FOO")
         
     def test_hogehoge(self):
-        arm = Arm.Arm;
-        self.assertEqual("move x:" + str(1) +" y: "+str(2)+" z: "+ str(3),arm.move(1,2,3));
+        arm = Arm.Arm();
+        locationXyz = [1,2,3]
+        self.assertEqual("move x:" + str(1) +" y: "+str(2)+" z: "+ str(3),arm.move(locationXyz));
 
     def test_calc(self):
-        arm = Arm.Arm;
+        arm = Arm.Arm();
         arm.calc()
         self.assertFalse(False);
 
+
+    def test_calcLocationFromThetas(self):
+        arm = Arm.Arm();
+        thetas = [0,0,0,0,0,3.14/4]
+        arm.calcPositionFromAngles(thetas);
 if __name__ == '__main__':
     unittest.main()

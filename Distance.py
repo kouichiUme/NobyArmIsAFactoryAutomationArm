@@ -37,3 +37,7 @@ class Distance :
     # 腕分だけ少し手前で止まるため
     def calcMoveDistance(self,targetToGrab):
         print("move and wait in front of object")
+    
+
+
+
