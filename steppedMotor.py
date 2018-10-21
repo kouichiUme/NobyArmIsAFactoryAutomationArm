@@ -55,14 +55,20 @@ def startCWRotate(startStop):
     while startStop and i < 30:
         pi.write(gpio_pin_X_black, 1)
         pi.write(gpio_pin_X_yellow, 0)
+        time.sleep(0.1)
+
         pi.write(gpio_pin_X_orange, 1)
-
+        time.sleep(0.1)
         pi.write(gpio_pin_X_black, 0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_brown, 1)
-
+        time.sleep(0.1)
         pi.write(gpio_pin_X_orange, 0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_yellow, 1)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_brown, 0)
+        time.sleep(0.1)
         i += 1
 #
 
@@ -71,13 +77,21 @@ def startCCWRotate(startStop):
     i = 0
     while startStop and i < 30:
         pi.write(gpio_pin_X_brown,0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_yellow,1)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_orange,0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_brown,1)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_black,0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_orange,1)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_yellow,0)
+        time.sleep(0.1)
         pi.write(gpio_pin_X_black,1)
+        time.sleep(0.1)
         i+=1
 
 
