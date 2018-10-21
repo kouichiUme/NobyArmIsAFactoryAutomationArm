@@ -36,7 +36,10 @@ def main():
     pi.set_mode(gpio_pin_X_black, pigpio.OUTPUT)
     time.sleep(5)
     startCWRotate(True)
+    startYCWRotate(True)
+    startZCWRotate(True)
     startCCWRotate(True)
+
 
 def startCWRotate(startStop):
 # X is black
@@ -71,6 +74,76 @@ def startCWRotate(startStop):
         time.sleep(0.1)
         i += 1
 #
+
+def startYCWRotate(startStop):
+# X is black
+# X_ is orange
+# Y is brown
+# Y_ is yellow
+# 2 phase
+# 1 step 3.75 degree
+#       1               2
+# X     on  on off off  on on off
+# X_    off on on  off  off on on
+# Y     off off on on   off off on
+# Y_    on off off on   on off off
+# clockwise
+    i = 0
+    while startStop and i < 30:
+        pi.write(gpio_pin_Y_black, 1)
+        pi.write(gpio_pin_Y_yellow, 0)
+        time.sleep(0.1)
+
+        pi.write(gpio_pin_Y_orange, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Y_black, 0)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Y_brown, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Y_orange, 0)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Y_yellow, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Y_brown, 0)
+        time.sleep(0.1)
+        i += 1
+#
+
+def startZCWRotate(startStop):
+# X is black
+# X_ is orange
+# Y is brown
+# Y_ is yellow
+# 2 phase
+# 1 step 3.75 degree
+#       1               2
+# X     on  on off off  on on off
+# X_    off on on  off  off on on
+# Y     off off on on   off off on
+# Y_    on off off on   on off off
+# clockwise
+    i = 0
+    while startStop and i < 30:
+        pi.write(gpio_pin_Z_black, 1)
+        pi.write(gpio_pin_Z_yellow, 0)
+        time.sleep(0.1)
+
+        pi.write(gpio_pin_Z_orange, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Z_black, 0)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Z_brown, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Z_orange, 0)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Z_yellow, 1)
+        time.sleep(0.1)
+        pi.write(gpio_pin_Z_brown, 0)
+        time.sleep(0.1)
+        i += 1
+#
+
+
 
 def startCCWRotate(startStop):
 # counter clock wise
