@@ -22,7 +22,7 @@ gpio_pin_Y_black = 7
 gpio_pin_Z_orange = 2
 gpio_pin_Z_yellow = 3
 gpio_pin_Z_brown = 4
-gpio_pin_Z_black = 12
+gpio_pin_Z_black = 14
 pi = pigpio.pi()
 
 
