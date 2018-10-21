@@ -23,20 +23,21 @@ gpio_pin_Z_orange = 2
 gpio_pin_Z_yellow = 3
 gpio_pin_Z_brown = 4
 gpio_pin_Z_black = 12
-
-
-print("start pigpio")
-
-
 pi = pigpio.pi()
-pi.set_mode(gpio_pin_X_orange, pigpio.OUTPUT)
-pi.set_mode(gpio_pin_X_yellow, pigpio.OUTPUT)
-pi.set_mode(gpio_pin_X_brown, pigpio.OUTPUT)
-pi.set_mode(gpio_pin_X_black, pigpio.OUTPUT)
-time.sleep(5)
 
-startCWRotate(True)
-startCCWRotate(True)
+
+def main():
+    print("start pigpio")
+
+
+    pi.set_mode(gpio_pin_X_orange, pigpio.OUTPUT)
+    pi.set_mode(gpio_pin_X_yellow, pigpio.OUTPUT)
+    pi.set_mode(gpio_pin_X_brown, pigpio.OUTPUT)
+    pi.set_mode(gpio_pin_X_black, pigpio.OUTPUT)
+    time.sleep(5)
+    startCWRotate(True)
+    startCCWRotate(True)
+
 def startCWRotate(startStop):
 # X is black
 # X_ is orange
@@ -64,6 +65,7 @@ def startCWRotate(startStop):
         pi.write(gpio_pin_X_brown, 0)
         i += 1
 #
+
 def startCCWRotate(startStop):
 # counter clock wise
     i = 0
@@ -77,3 +79,8 @@ def startCCWRotate(startStop):
         pi.write(gpio_pin_X_yellow,0)
         pi.write(gpio_pin_X_black,1)
         i+=1
+
+
+if __name__ == '__main__':
+    main()
+
