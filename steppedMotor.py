@@ -35,8 +35,8 @@ pi.set_mode(gpio_pin_X_brown, pigpio.OUTPUT)
 pi.set_mode(gpio_pin_X_black, pigpio.OUTPUT)
 time.sleep(5)
 
+startCWRotate(True)
 startCCWRotate(True)
-
 def startCWRotate(startStop):
 # X is black
 # X_ is orange
