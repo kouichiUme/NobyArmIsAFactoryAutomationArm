@@ -57,6 +57,9 @@ class Arm(threading.Thread):
         self.direction = 1250
         self.minPwmRate = 500
         self.maxPwmRate = 2000
+        self.rangePwm = self.minPwmRate -  self.maxPwmRate
+        self.centerPwmValue = (self.maxPwmRate + self.minPwmRate) /2
+
         #p = threading.Thread()
         # p.start()
 
@@ -149,29 +152,30 @@ class Arm(threading.Thread):
             if self.palmRoteateCounterClockWise:
                 if self.minPwm(self.palmPwmRate):
                     self.palmPwmRate -= self.delta
-                self.raspberry.setOutput(PALM_PINCH_IO, self.palmPwmRate)
+                self.raspberry.setPwmOutput(PALM_PINCH_IO, self.palmPwmRate)
             # 手のひら時計回り
             if self.palmRoteateClockWise:
                 if self.maxPwm(self.palmPwmRate):
                     self.palmPwmRate += self.delta
-                self.raspberry.setOutput(PALM_PINCH_IO, self.palmPwmRate)
+                self.raspberry.setPwmOutput(PALM_PINCH_IO, self.palmPwmRate)
             # ローテート
             if self.rotateClockWise:
                 if self.maxPwm(self.armRotatePwmRate):
                     self.armRotatePwmRate += self.delta
-                self.raspberry.setOutput(ARM_ROTATE_IO, self.armRotatePwmRate)
+                self.raspberry.setPwmOutput(ARM_ROTATE_IO, self.armRotatePwmRate)
             # 腕ローテート
             if self.rotateCounterClockWise:
                 if self.minPwm(self.armRotatePwmRate):
                     self.armRotatePwmRate -= self.delta
-                self.raspberry.setOutput(ARM_ROTATE_IO, self.armRotatePwmRate)
+                self.raspberry.setPwmOutput(ARM_ROTATE_IO, self.armRotatePwmRate)
             # 手首
-            self.raspberry.setOutput(WRIST_SNAP_IO, self.wristSnapRate)
+            self.raspberry.setPwmOutput(WRIST_SNAP_IO, self.wristSnapRate)
             # 肘
-            self.raspberry.setOutput(ARM_ELBOW_IO, self.elbowRate)
+            self.raspberry.setPwmOutput(ARM_ELBOW_IO, self.elbowRate)
             # 肩
-            self.raspberry.setOutput(ARM_SHOULDER_IO, self.shoulderRate)
-            self.raspberry.setOutput(ARM_DIRECTION_IO, self.direction)
+            self.raspberry.setPwmOutput(ARM_SHOULDER_IO, self.shoulderRate)
+            # 腕全体の向き
+            self.raspberry.setPwmOutput(ARM_DIRECTION_IO, self.direction)
 
     # 腕の各角度を計算して予測位置(x,y,z)を計算する
     # x left to right
@@ -227,3 +231,42 @@ class Arm(threading.Thread):
         print(" hand x : " + str(result_hand_x) + " hand y : " +
               str(result_hand_y) + " hand z : " + str(result_hand_z))
 
+
+
+    # theta6
+    # 全体の腕の向きを計算する。
+    # 高さyは無関係
+    # 腕の位置をから中心から反時計周りに
+    def calcDirectionFromTarget(self,targetXyz):
+        self.printXyz(targetXyz)
+        #x , y , z
+        targetXyz[0],targetXyz[1],targetXyz[2]
+        srt = math.sqrt(targetXyz[0]* targetXyz[0] + targetXyz[2]*targetXyz[2])
+        theta6 = math.asin(- targetXyz[0]/ srt)
+        return theta6
+
+    #
+    # ターゲットの方に向きを変える
+    # いまは、0で中心になるようにしている。
+    # 
+    def directToTarget(self,targetXyz):
+        theta6 = self.calcDirectionFromTarget(targetXyz)
+        # 腕の向きを変える
+        degree = theta6/(2*math.pi)
+        #rangeがいまは500~2000で360度としている
+        # 実際にはもっと狭い範囲だからずれてくる
+        # 実際に500のときと2000のときの角度を図る必要がある。
+        # いまは、0で中心になるようにしている。
+        pwmRate = self.rangePwm * degree + self.centerPwmValue
+        # 腕の向きをセット
+        self.setDirection(pwmRate)
+
+    #デバッグ表示用
+    def printXyz(self,targetXyz):
+            print("target x:" + str(targetXyz[0]) + " target y:" + str(targetXyz[1])
+            +" target z:" + str(targetXyz[2]))
+
+
+    # theta5で高さを固定して、
+    #  depth(z) 方向をたてるために
+    # theta5 - theta4みたいな感じで腕を伸ばしていく

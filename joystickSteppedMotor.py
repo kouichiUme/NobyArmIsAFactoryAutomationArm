@@ -8,13 +8,20 @@ import time
 import threading
 import SteppedMotor
 
-# ステッピングモータ初期化 X Y Z
-xSteppedMotor = SteppedMotor.SteppedMotor(10,12,16,20,21)
-ySteppedMotor = SteppedMotor.SteppedMotor(10,15,25,8,7)
-zSteppedMotor = SteppedMotor.SteppedMotor(10,2,3,4,14)
-#
+# ステッピングモータ初期化 r X Y Z (半径 10mm)
+xSteppedMotor = SteppedMotor.SteppedMotor("X",10,12,16,20,21)
+ySteppedMotor = SteppedMotor.SteppedMotor("Y",10,15,25,8,7)
+zSteppedMotor = SteppedMotor.SteppedMotor("Z",10,2,3,4,14)
+#x axis 
 xSteppedMotor.setDaemon(True)
 xSteppedMotor.start()
+#y axis 
+ySteppedMotor.setDaemon(True)
+ySteppedMotor.start()
+#z axis 
+zSteppedMotor.setDaemon(True)
+zSteppedMotor.start()
+
 
 # ボタンは 0から11まで
 # アナログボタンを押すと joyaixisモーションがアナログで動く
@@ -72,18 +79,43 @@ def main():
             if (e.type == KEYDOWN and
                     e.key == K_ESCAPE):  # ESCが押された？
                 return
+            #
             # Joystick関連のイベントチェック
+            # コントローラ
             if e.type == pygame.locals.JOYAXISMOTION:  # 7
+                #左コントローラ
                 x, y = j.get_axis(0), j.get_axis(1)
+                #右コントローラ
                 z, t = j.get_axis(2), j.get_axis(3)
                 print('x and y : ' + str(x) + ' , ' + str(y))
+                #左に進む(X axis CW)
+                if x < 0 :
+                    xSteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_FORWARD)
+                
+                if math.fabs(x) < 0.001 :
+                    xSteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_STOP)
+                
+                #右に進む(X axis CCW)
+                if x > 0 :
+                    xSteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_BACKWARD)
+                # 手前に移動
+                if y < 0:
+                    ySteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_FORWARD)
+                
+                #停止
+                if math.fabs(y) < 0.001 :
+                    ySteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_STOP)
+
+                # 奥に移動
+                if y > 0:
+                    ySteppedMotor.setMoveDirection(SteppedMotor.MOVE_DIRECTION_BACKWARD)
+
+
+
                 print('z and t : ' + str(z) + ' , ' + str(t))
-                v,theta1 = roundArm(x,y)
-                v2,theta2 =  roundArm(z, t)
-                robotArmDirection(theta1)
-                robotArmShoulder(v)
-                robotArmWristSnap(theta2)
-                robotArmElbow(v2)
+                # 
+
+
             elif e.type == pygame.locals.JOYBALLMOTION:  # 8
                 print('ball motion')
             elif e.type == pygame.locals.JOYHATMOTION:  # 9

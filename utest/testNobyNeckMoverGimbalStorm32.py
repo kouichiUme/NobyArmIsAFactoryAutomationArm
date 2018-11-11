@@ -7,10 +7,10 @@ import NobyNeckMoverGimbalStorm
 sys.path.append("..")
 class TestNobyNeckMoverGimbalStorm(unittest.TestCase):
 
-    def test_detect(self):
+    def test_storm(self):
             print("noby neck mover start")
             nobyNeck = NobyNeckMoverGimbalStorm.NobyNeckMoverGimbalStorm()
-            nobyNeck.move(20,20,20)
+            nobyNeck.moveRotate(20,20,20)
             self.assertEqual("foo".upper(),"FOO")
         
 if __name__ == '__main__':

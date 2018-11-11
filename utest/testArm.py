@@ -2,6 +2,7 @@
 import unittest
 import sys
 sys.path.append("..")
+import math
 import Arm
 class TestArm(unittest.TestCase):
 
@@ -23,5 +24,11 @@ class TestArm(unittest.TestCase):
         arm = Arm.Arm();
         thetas = [0,0,0,0,0,3.14/4]
         arm.calcPositionFromAngles(thetas);
+
+    def test_calcTargetDirection(self):
+        arm = Arm.Arm()
+        targetXyz= [-1,0,1]
+        self.assertAlmostEqual(math.pi/4,arm.calcDirectionFromTarget(targetXyz))
+
 if __name__ == '__main__':
     unittest.main()
