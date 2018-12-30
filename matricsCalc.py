@@ -100,4 +100,36 @@ e3  = np.matmul(t3,iT3)
 # 逆行列かける行列
 print(e3)
 
+# Y軸に沿って math.pi /2 回転
+#  
+# t1 * (0,0,-1)から(1,0,0)になるはず
+rotateTable = transportXyzAxisY(0,0,0,math.pi/2)
+print(" 0,0,-1 を回転")
+act = np.matmul(rotateTable,[1,0,0,-1])
+print(act)
+
+# Y軸に沿って移動して
+# y軸に回転しているからY自体は変更されない
+translateY = transportXyzAxisY(0,1,0,math.pi/2)
+actYaxismove = np.matmul(translateY,[1,0,0,-1])
+print(actYaxismove)
+
+# X軸に沿って回転
+rotateT2 = transportXyzAxisX(0,0,0,math.pi/2)
+actXaxisRotate = np.matmul(rotateT2,[1,0,1,0])
+# 0,0,1になるはず
+print(actXaxisRotate)
+
+#todo 残りの３軸に対して移動
+
+
+# Z軸に沿って回転
+rotateT3 = transportXyzAxisZ(0,0,0,math.pi/2)
+# 肩から先の腕の部分です
+actZaxisRotate = np.matmul(rotateT3,[1,0,1,0])
+#[1,-1,0,0]になるはず
+print('rotate axis z [1,-1,0,0]')
+print(actZaxisRotate)
+
+
 
